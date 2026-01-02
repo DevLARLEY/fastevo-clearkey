@@ -171,10 +171,9 @@ if __name__ == '__main__':
     decrypted_obj = fastevo.decrypt_obj(response.json())
     clearkeys = decrypted_obj["playbackData"]["protectionDetails"]["clearKeys"]
 
-    for clearkey in clearkeys:
-        print(f"--key {clearkey['keyId']}:{clearkey['key']}", end=" ")
-    print()
+    key_str = "".join(list(map(
+        lambda ck: f"--key {ck['keyId']}:{ck['key']} ",
+        clearkeys
+    ))).strip()
 
-    print(decrypted_obj["playbackData"]["mediaPlaylistUrl"])
-
-    print("USE SHAKA PACKAGER")
+    print(f"N_m3u8DL-RE \"{decrypted_obj["playbackData"]["mediaPlaylistUrl"]}\" {key_str} -M format=mkv --use-shaka-packager")
